@@ -3,11 +3,16 @@ package martianchess;
 import java.awt.*;
 
 public class Player {
-    private static int numPlayers=2;
+    private static int numPlayers = 2;
     private static Player players[] = new Player[numPlayers];
     private static Player currentPlayer;
+    private Board board = new Board();
     private Color color;
     private int score;
+    
+    Player(){
+    }
+    
     public static void Reset() {
         if (players[0] == null) {
             players[0] = new Player(Color.red);
@@ -36,6 +41,9 @@ public class Player {
     public static Player getPlayer4() {
         return players[3];
     }    
+    public Board getBoard(){
+        return(board);
+    }
     public Player(Color _color) {
         color = _color;
         score = 0;
