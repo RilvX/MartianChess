@@ -14,6 +14,7 @@ public class MartianChess extends JFrame implements Runnable {
     
     Image background;
     
+    
     Pieces pieces;
     
     boolean gameOver;
@@ -30,6 +31,7 @@ public class MartianChess extends JFrame implements Runnable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setResizable(false);
+        Player.Reset();
     }
 
     public MartianChess() {
@@ -124,7 +126,6 @@ public class MartianChess extends JFrame implements Runnable {
         
         for (Pieces obj : Pieces.pieces)
             obj.Draw(g,this);
-        pieces.Draw(g,this);
         
         //Move to new class
 //        if (numPlayers >= 1)
@@ -153,6 +154,9 @@ public class MartianChess extends JFrame implements Runnable {
             g.setColor(Color.yellow);
             g.drawString("Score = " + score, (Window.getWidth2()/4)*3+20, Window.WINDOW_HEIGHT-25);
             g.drawString("Wins = " + score, (Window.getWidth2()/4)*3+20, Window.WINDOW_HEIGHT-10);
+            
+            Player.getPlayer1().getBoard().Draw(g, this);
+            Player.getPlayer2().getBoard().Draw(g, this);
 //        }
         
         if (gameOver)        
@@ -185,7 +189,7 @@ public class MartianChess extends JFrame implements Runnable {
         timeCount = 0;
         gameOver = false;
         score = 0;
-        
+        Player.Reset();
     }
 /////////////////////////////////////////////////////////////////////////
     public void animate() {
@@ -203,7 +207,6 @@ public class MartianChess extends JFrame implements Runnable {
         if (gameOver)
             return;
         
-        pieces.animate();
         
         timeCount++;
     }
