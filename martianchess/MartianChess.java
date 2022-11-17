@@ -186,7 +186,6 @@ public class MartianChess extends JFrame implements Runnable {
         gameOver = false;
         score = 0;
         
-        pieces = new Pieces();
     }
 /////////////////////////////////////////////////////////////////////////
     public void animate() {

@@ -2,11 +2,10 @@ package martianchess;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Pieces {
+public abstract class Pieces {
     public static ArrayList<Pieces> pieces = new ArrayList<Pieces>();
-    private static Image pieceS;
-    private static Image pieceM;
-    private static Image pieceL;
+    Image pieceImage;
+    protected int val;
     int xpos;
     int ypos;
 
@@ -23,16 +22,11 @@ public class Pieces {
 
     public static void Init()
     {
-        pieceS = Toolkit.getDefaultToolkit().getImage("./SPiece_1Point.PNG");
-        pieceM = Toolkit.getDefaultToolkit().getImage("./MPiece_2Point.PNG");
-        pieceL = Toolkit.getDefaultToolkit().getImage("./LPiece_3Point.PNG");
     }
     
     public void Draw(Graphics2D g,MartianChess thisObj)
     {
-        drawImage(g,thisObj,pieceS,Window.getX(xpos),Window.getYNormal(ypos),0,1,1);
-        drawImage(g,thisObj,pieceM,Window.getX(xpos),Window.getYNormal(ypos),0,1,1);
-        drawImage(g,thisObj,pieceL,Window.getX(xpos),Window.getYNormal(ypos),0,1,1);
+        drawImage(g,thisObj,this.pieceImage,Window.getX(xpos),Window.getYNormal(ypos),0,1,1);
     }
     
     public void drawImage(Graphics2D g,MartianChess thisObj,Image image,int xpos,int ypos,double rot,double xscale,double yscale) {
