@@ -31,6 +31,7 @@ public class MartianChess extends JFrame implements Runnable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setResizable(false);
+        
         Player.Reset();
     }
 
@@ -130,34 +131,33 @@ public class MartianChess extends JFrame implements Runnable {
         //Move to new class
 //        if (numPlayers >= 1)
 //        {
-            g.setColor(Color.yellow);
+            g.setColor(Player.getPlayer1().getColor());
             g.drawString("Score = " + score, Window.getWidth2()/4-100, 45);
             g.drawString("Wins = " + score, Window.getWidth2()/4-100, 60);
 //        }
 //        
 //        if (numPlayers >= 2)
 //        {
-            g.setColor(Color.yellow);
+            g.setColor(Player.getPlayer2().getColor());
             g.drawString("Score = " + score, (Window.getWidth2()/4)*3+20, 45);
             g.drawString("Wins = " + score, (Window.getWidth2()/4)*3+20, 60);
 //        }
-//        
-//        if (numPlayers >= 3)
-//        {
-            g.setColor(Color.yellow);
+        
+        if (Player.getNumPlayers() >= 3)
+        {
+            g.setColor(Player.getPlayer3().getColor());
             g.drawString("Score = " + score, Window.getWidth2()/4-100, Window.WINDOW_HEIGHT-25);
-            g.drawString("Wins = " + score, Window.getWidth2()/4-100,Window.WINDOW_HEIGHT-10);
-//        }
+            g.drawString("Wins = " + score, Window.getWidth2()/4-100,Window.WINDOW_HEIGHT-10); 
+        }
 //        
-//        if (numPlayers >= 4)
-//        {
-            g.setColor(Color.yellow);
+       if (Player.getNumPlayers() >= 4)
+        {
+            g.setColor(Player.getPlayer4().getColor());
             g.drawString("Score = " + score, (Window.getWidth2()/4)*3+20, Window.WINDOW_HEIGHT-25);
             g.drawString("Wins = " + score, (Window.getWidth2()/4)*3+20, Window.WINDOW_HEIGHT-10);
-            
-            Player.getPlayer1().getBoard().Draw(g, this);
-            Player.getPlayer2().getBoard().Draw(g, this);
-//        }
+        }
+       Player.getPlayer1().getBoard().Draw(g, this);
+       Player.getPlayer2().getBoard().Draw(g, this);
         
         if (gameOver)        
         {
