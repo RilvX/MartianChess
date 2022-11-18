@@ -158,6 +158,10 @@ public class MartianChess extends JFrame implements Runnable {
         }
        Player.getPlayer1().getBoard().Draw(g, this);
        Player.getPlayer2().getBoard().Draw(g, this);
+       if (Player.getNumPlayers() == 4){
+           Player.getPlayer3().getBoard().Draw(g, this);
+           Player.getPlayer4().getBoard().Draw(g, this);
+       }
         
         if (gameOver)        
         {
