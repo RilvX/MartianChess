@@ -12,10 +12,24 @@ public class Board {
     
     public void Draw(Graphics2D g,MartianChess thisObj)
     {
-        if (this == Player.getPlayer1().getBoard())
-            drawImage(g,thisObj,this.boardImage,Window.getX(Window.getWidth2()/2),Window.getYNormal(Window.getHeight2()/4 + 25), 270,.125,.125);
-        if (this == Player.getPlayer2().getBoard())
-            drawImage(g,thisObj,this.boardImage,Window.getX(Window.getWidth2()/2),Window.getYNormal((Window.getHeight2()/4)*3 - 25),0,.125,.125);
+        if (this == Player.getPlayer1().getBoard()){
+            if(Player.getNumPlayers() == 2)
+                drawImage(g,thisObj,this.boardImage,Window.getX(Window.getWidth2()/2),Window.getYNormal(Window.getHeight2()/4 + 25)*3, 0, .125, .125);
+            else
+                drawImage(g,thisObj,this.boardImage,Window.getX(Window.getWidth2()/4),Window.getYNormal(Window.getHeight2()/4 + 25)*3, 0, .125, .125);
+        }
+        else if (this == Player.getPlayer2().getBoard()){
+            if(Player.getNumPlayers() == 2)
+                drawImage(g,thisObj,this.boardImage,Window.getX(Window.getWidth2()/2),Window.getYNormal((Window.getHeight2()/4) - 25),0,.125,.125);
+            else
+                drawImage(g,thisObj,this.boardImage,Window.getX(Window.getWidth2()/4)*3,Window.getYNormal(Window.getHeight2()/4*3 + 25), 0, .125, .125);
+        }
+        if (Player.getNumPlayers() == 4){
+            if (this == Player.getPlayer3().getBoard())
+                drawImage(g,thisObj,this.boardImage,Window.getX(Window.getWidth2()/4),Window.getYNormal((Window.getHeight2()/4) - 25),0,.125,.125);
+            if (this == Player.getPlayer4().getBoard())
+                drawImage(g,thisObj,this.boardImage,Window.getX(Window.getWidth2()/4*3),Window.getYNormal((Window.getHeight2()/4) - 25),0,.125,.125);
+        }
     }
     
     public void drawImage(Graphics2D g,MartianChess thisObj,Image image,int xpos,int ypos,double rot,double xscale,double yscale) {

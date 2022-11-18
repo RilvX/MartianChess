@@ -3,7 +3,7 @@ package martianchess;
 import java.awt.*;
 
 public class Player {
-    private static int numPlayers = 2;
+    private static int numPlayers = 4;
     private static Player players[] = new Player[numPlayers];
     private static Player currentPlayer;
     private Board board = new Board();
@@ -16,7 +16,11 @@ public class Player {
     public static void Reset() {
         if (players[0] == null) {
             players[0] = new Player(Color.red);
-            players[1] = new Player(Color.yellow);
+            players[1] = new Player(Color.blue);
+            if (numPlayers >= 3){
+                players[2] = new Player(Color.yellow);
+                players[3] = new Player(Color.green);
+            }
         }
         currentPlayer = players[0];
     }
@@ -43,6 +47,9 @@ public class Player {
     }    
     public Board getBoard(){
         return(board);
+    }
+    public static int getNumPlayers(){
+        return(numPlayers);
     }
     public Player(Color _color) {
         color = _color;
