@@ -7,9 +7,23 @@ import java.awt.Toolkit;
 public class Board {
     private final static int NUM_ROWS = 4;
     private final static int NUM_COLUMNS = 4;  
-    private static Pieces board[][] = new Pieces[NUM_ROWS][NUM_COLUMNS];
+    public Pieces board[][] = new Pieces[NUM_ROWS][NUM_COLUMNS];
     public static Image boardImage = Toolkit.getDefaultToolkit().getImage("./Board.PNG");
     
+    public void reset(){
+        board[0][0] = new Queen(this, 0, 0);
+        board[1][0] = new Queen(this, 1, 0);
+        board[0][1] = new Queen(this, 0, 1);
+        board[1][1] = new Drone(this, 1, 1);
+        board[2][0] = new Drone(this, 2, 0);
+        board[0][2] = new Drone(this, 0, 2);
+        board[2][2] = new Pawn(this, 2, 2);
+        board[2][1] = new Pawn(this, 2, 1);
+        board[1][2] = new Pawn(this, 1, 2);
+    }
+    public Pieces get(int x, int y){
+        return(board[x][y]);
+    }
     public void Draw(Graphics2D g,MartianChess thisObj)
     {
         if (this == Player.getPlayer1().getBoard()){
@@ -48,4 +62,10 @@ public class Board {
         g.rotate(-rot  * Math.PI/180.0);
         g.translate(-xpos,-ypos);
     }   
+    public static int numRows(){
+        return(NUM_ROWS);
+    }
+    public static int numColumns(){
+        return(NUM_COLUMNS);
+    }
 }

@@ -6,13 +6,15 @@ public abstract class Pieces {
     public static ArrayList<Pieces> pieces = new ArrayList<Pieces>();
     Image pieceImage;
     protected int val;
+    private Board board;
     int xpos;
     int ypos;
 
-    Pieces()
+    Pieces(Board _board, int x, int y)
     {
-        xpos = Window.getWidth2()/2;
-        ypos = Window.getHeight2()/2;
+        board = _board;
+        xpos = x;
+        ypos = y;
     }
     
     public void animate()
@@ -26,7 +28,22 @@ public abstract class Pieces {
     
     public void Draw(Graphics2D g,MartianChess thisObj)
     {
-        drawImage(g,thisObj,this.pieceImage,Window.getX(xpos),Window.getYNormal(ypos),0,1,1);
+        if (Player.getNumPlayers() == 4){
+            if (board == Player.getPlayer1().getBoard())
+                drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28),Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) ,0,.125,.125);
+            else if (board == Player.getPlayer2().getBoard())
+                drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28),Window.getYNormal(75 + (ypos * 47)) ,0,.125,.125);
+            else if (board == Player.getPlayer3().getBoard())
+                drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29),Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) ,0,.125,.125);
+            else if (board == Player.getPlayer4().getBoard())
+                drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29),Window.getYNormal(75 + (ypos * 47)),0,.125,.125);
+        }
+        else if (Player.getNumPlayers() == 2){
+            if (board == Player.getPlayer1().getBoard())
+                drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) + (xpos * 48) + 126),Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 47) ,0,.125,.125);
+            if (board == Player.getPlayer2().getBoard())
+                drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/2) - (xpos * 48) + 71),Window.getYNormal(77 + (ypos * 47)),0,.125,.125);
+        }
     }
     
     public void drawImage(Graphics2D g,MartianChess thisObj,Image image,int xpos,int ypos,double rot,double xscale,double yscale) {

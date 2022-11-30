@@ -12,7 +12,7 @@ public class Window {
     
  /////////////////////////////////////////////////////////////////////////
     public static int getX(int x) {
-        return (x + XBORDER);
+        return (x + XBORDER + WINDOW_BORDER);
     }
 
     public static int getY(int y) {
