@@ -22,7 +22,20 @@ public class Player {
                 players[3] = new Player(Color.green);
             }
         }
+        for (Player obj: players){
+            obj.board.reset();
+        }
         currentPlayer = players[0];
+    }
+    public static void draw(Graphics2D g,MartianChess thisObj){
+        for (Player obj: players){
+            for (int x = 0; x < Board.numColumns(); x ++){
+                for(int y = 0; y < Board.numRows(); y ++){
+                    if (obj.board.get(x,y) != null)
+                        obj.board.get(x, y).Draw(g, thisObj);
+                }
+            }
+        }
     }
     public static Player getCurrentPlayer() {
         return currentPlayer;

@@ -40,7 +40,7 @@ public class MartianChess extends JFrame implements Runnable {
             public void mousePressed(MouseEvent e) {
                 if (e.BUTTON1 == e.getButton()) {
                     //left button
-
+                    select(e.getX(),e.getY());
 
                 }
                 if (e.BUTTON3 == e.getButton()) {
@@ -125,8 +125,7 @@ public class MartianChess extends JFrame implements Runnable {
 
         g.drawImage(background,Window.getX(0),Window.getY(0),Window.getWidth2(),Window.getHeight2(),this);
         
-        for (Pieces obj : Pieces.pieces)
-            obj.Draw(g,this);
+        
         
         //Move to new class
 //        if (numPlayers >= 1)
@@ -162,6 +161,9 @@ public class MartianChess extends JFrame implements Runnable {
            Player.getPlayer3().getBoard().Draw(g, this);
            Player.getPlayer4().getBoard().Draw(g, this);
        }
+
+       Player.draw(g, this);
+        
         
         if (gameOver)        
         {
@@ -228,5 +230,15 @@ public class MartianChess extends JFrame implements Runnable {
             relaxer.stop();
         }
         relaxer = null;
+    }
+    public void select(int x, int y){
+        if (x < Window.getX(Window.getWidth2()/4) + 198 && x > Window.getX(Window.getWidth2()/4) + 2 && y < Window.getYNormal(Window.getHeight2()/4*3 - 23) + 98 && y > Window.getYNormal(Window.getHeight2()/4*3 - 23) - 98)
+            System.out.println("Board 1");
+        else if (x < Window.getX(Window.getWidth2()/4*3) - 2 && x > Window.getX(Window.getWidth2()/4*3) - 198 && y < Window.getYNormal(Window.getHeight2()/4*3 - 23) + 98 && y > Window.getYNormal(Window.getHeight2()/4*3 - 23) - 98)
+            System.out.println("Board 2");
+        else if (x < Window.getX(Window.getWidth2()/4) + 198 && x > Window.getX(Window.getWidth2()/4) + 2 && y < Window.getYNormal((Window.getHeight2()/4) + 23) + 98 && y > Window.getYNormal((Window.getHeight2()/4) + 23) - 98)
+            System.out.println("Board 3");
+        else if (x < Window.getX(Window.getWidth2()/4*3) - 2 && x > Window.getX(Window.getWidth2()/4*3) - 198 && y < Window.getYNormal((Window.getHeight2()/4) + 23) + 98 && y > Window.getYNormal((Window.getHeight2()/4) + 23) - 98)
+            System.out.println("Board 4");
     }
 }
