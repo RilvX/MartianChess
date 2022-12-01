@@ -32,9 +32,9 @@ public abstract class Pieces {
             if (board == Player.getPlayer1().getBoard())
                 drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28),Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) ,0,.125,.125);
             else if (board == Player.getPlayer2().getBoard())
-                drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28),Window.getYNormal(75 + (ypos * 47)) ,0,.125,.125);
-            else if (board == Player.getPlayer3().getBoard())
                 drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29),Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) ,0,.125,.125);
+            else if (board == Player.getPlayer3().getBoard())
+                drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28),Window.getYNormal(75 + (ypos * 47)) ,0,.125,.125);
             else if (board == Player.getPlayer4().getBoard())
                 drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29),Window.getYNormal(75 + (ypos * 47)),0,.125,.125);
         }
@@ -60,6 +60,7 @@ public abstract class Pieces {
         g.rotate(-rot  * Math.PI/180.0);
         g.translate(-xpos,-ypos);
     }    
+    public abstract void move(Board board, int x, int y);
 }
 
 //public class Pieces {

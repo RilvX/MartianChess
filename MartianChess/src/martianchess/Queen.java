@@ -8,4 +8,7 @@ public class Queen extends Pieces {
         pieceImage = Toolkit.getDefaultToolkit().getImage("./LPiece_3Point.PNG");
         val = 3;
     }
+    public void move(Board board, int x, int y){
+        
+    }
 }

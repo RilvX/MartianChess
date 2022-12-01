@@ -8,4 +8,7 @@ public class Drone extends Pieces{
         pieceImage = Toolkit.getDefaultToolkit().getImage("./MPiece_2Point.PNG");
         val = 2;
     }
+    public void move(Board board, int x, int y){
+        
+    }
 }
