@@ -17,6 +17,8 @@ public class MartianChess extends JFrame implements Runnable {
     
     Pieces pieces;
     
+    Pieces selectedPiece;
+    
     boolean gameOver;
     
     static int timeCount;
@@ -40,7 +42,12 @@ public class MartianChess extends JFrame implements Runnable {
             public void mousePressed(MouseEvent e) {
                 if (e.BUTTON1 == e.getButton()) {
                     //left button
-                    select(e.getX(),e.getY());
+                    if (selectedPiece == null)
+                        selectedPiece = select(e.getX(),e.getY());
+                    else{
+                        MovePos(e.getX(), e.getY());
+                        selectedPiece = null;
+                    }
 
                 }
                 if (e.BUTTON3 == e.getButton()) {
@@ -231,14 +238,160 @@ public class MartianChess extends JFrame implements Runnable {
         }
         relaxer = null;
     }
-    public void select(int x, int y){
-        if (x < Window.getX(Window.getWidth2()/4) + 198 && x > Window.getX(Window.getWidth2()/4) + 2 && y < Window.getYNormal(Window.getHeight2()/4*3 - 23) + 98 && y > Window.getYNormal(Window.getHeight2()/4*3 - 23) - 98)
+    public Pieces select(int x, int y){
+        Board board;
+        if (x < Window.getX(Window.getWidth2()/4) + 198 
+                && x > Window.getX(Window.getWidth2()/4) + 2 
+                && y < Window.getYNormal(Window.getHeight2()/4*3 - 23) + 98 
+                && y > Window.getYNormal(Window.getHeight2()/4*3 - 23) - 98){
             System.out.println("Board 1");
-        else if (x < Window.getX(Window.getWidth2()/4*3) - 2 && x > Window.getX(Window.getWidth2()/4*3) - 198 && y < Window.getYNormal(Window.getHeight2()/4*3 - 23) + 98 && y > Window.getYNormal(Window.getHeight2()/4*3 - 23) - 98)
+            for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
+                for (int ypos = 0; ypos < Board.numRows(); ypos ++){
+                    if (x < Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28) + 24 
+                            && x > Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28) - 24 
+                            && y < Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) + 24 
+                            && y > Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) - 24){
+                        System.out.println(xpos + ", " + ypos);
+                        return(Player.getPlayer1().getBoard().get(xpos, ypos));
+                    }
+                }
+            }
+        }
+        else if (x < Window.getX(Window.getWidth2()/4*3) - 2 
+                && x > Window.getX(Window.getWidth2()/4*3) - 198 
+                && y < Window.getYNormal(Window.getHeight2()/4*3 - 23) + 98 
+                && y > Window.getYNormal(Window.getHeight2()/4*3 - 23) - 98){
             System.out.println("Board 2");
-        else if (x < Window.getX(Window.getWidth2()/4) + 198 && x > Window.getX(Window.getWidth2()/4) + 2 && y < Window.getYNormal((Window.getHeight2()/4) + 23) + 98 && y > Window.getYNormal((Window.getHeight2()/4) + 23) - 98)
+            for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
+                for (int ypos = 0; ypos < Board.numRows(); ypos ++){
+                    if (x < Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29) + 24
+                            && x > Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29) - 24
+                            && y < Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) + 24
+                            && y > Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) - 24){
+                        System.out.println(xpos + ", " + ypos);
+                        return(Player.getPlayer2().getBoard().get(xpos, ypos));
+                    }
+                }
+            }
+        }
+        else if (x < Window.getX(Window.getWidth2()/4) + 198 
+                && x > Window.getX(Window.getWidth2()/4) + 2 
+                && y < Window.getYNormal((Window.getHeight2()/4) + 23) + 98 
+                && y > Window.getYNormal((Window.getHeight2()/4) + 23) - 98){
             System.out.println("Board 3");
-        else if (x < Window.getX(Window.getWidth2()/4*3) - 2 && x > Window.getX(Window.getWidth2()/4*3) - 198 && y < Window.getYNormal((Window.getHeight2()/4) + 23) + 98 && y > Window.getYNormal((Window.getHeight2()/4) + 23) - 98)
+            for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
+                for (int ypos = 0; ypos < Board.numRows(); ypos ++){
+                    if (x < Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28) + 24
+                            && x > Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28) - 24
+                            && y < Window.getYNormal(75 + (ypos * 47)) + 24
+                            && y > Window.getYNormal(75 + (ypos * 47)) - 24){
+                        System.out.println(xpos + ", " + ypos);
+                        return(Player.getPlayer3().getBoard().get(xpos, ypos));
+                    }
+                }
+            }
+        }
+        else if (x < Window.getX(Window.getWidth2()/4*3) - 2 
+                && x > Window.getX(Window.getWidth2()/4*3) - 198 
+                && y < Window.getYNormal((Window.getHeight2()/4) + 23) + 98 
+                && y > Window.getYNormal((Window.getHeight2()/4) + 23) - 98){
             System.out.println("Board 4");
+            for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
+                for (int ypos = 0; ypos < Board.numRows(); ypos ++){
+                    if (x <  Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29) + 24 
+                            && x >  Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29) - 24 
+                            && y < Window.getYNormal(75 + (ypos * 47)) + 24 
+                            && y > Window.getYNormal(75 + (ypos * 47)) - 24){
+                        System.out.println(xpos + ", " + ypos);
+                        return(Player.getPlayer4().getBoard().get(xpos, ypos));
+                    }
+                }
+            }
+        }
+        return(null);
+    }
+    public int[] MovePos(int x, int y){
+        int[] board = new int[3];
+        if (x < Window.getX(Window.getWidth2()/4) + 198 
+                && x > Window.getX(Window.getWidth2()/4) + 2 
+                && y < Window.getYNormal(Window.getHeight2()/4*3 - 23) + 98 
+                && y > Window.getYNormal(Window.getHeight2()/4*3 - 23) - 98){
+            System.out.println("Board 1");
+            board[0] = 0;
+            for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
+                for (int ypos = 0; ypos < Board.numRows(); ypos ++){
+                    if (x < Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28) + 24 
+                            && x > Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28) - 24 
+                            && y < Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) + 24 
+                            && y > Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) - 24){
+                        System.out.println(xpos + ", " + ypos);
+                        board[1] = xpos;
+                        board[2] = ypos;
+                        return(board);
+                    }
+                }
+            }
+        }
+        else if (x < Window.getX(Window.getWidth2()/4*3) - 2 
+                && x > Window.getX(Window.getWidth2()/4*3) - 198 
+                && y < Window.getYNormal(Window.getHeight2()/4*3 - 23) + 98 
+                && y > Window.getYNormal(Window.getHeight2()/4*3 - 23) - 98){
+            System.out.println("Board 2");
+            board[0] = 1;
+            for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
+                for (int ypos = 0; ypos < Board.numRows(); ypos ++){
+                    if (x < Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29) + 24
+                            && x > Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29) - 24
+                            && y < Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) + 24
+                            && y > Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) - 24){
+                        System.out.println(xpos + ", " + ypos);
+                        board[1] = xpos;
+                        board[2] = ypos;
+                        return(board);
+                    }
+                }
+            }
+        }
+        else if (x < Window.getX(Window.getWidth2()/4) + 198 
+                && x > Window.getX(Window.getWidth2()/4) + 2 
+                && y < Window.getYNormal((Window.getHeight2()/4) + 23) + 98 
+                && y > Window.getYNormal((Window.getHeight2()/4) + 23) - 98){
+            System.out.println("Board 3");
+            board[0] = 2;
+            for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
+                for (int ypos = 0; ypos < Board.numRows(); ypos ++){
+                    if (x < Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28) + 24
+                            && x > Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28) - 24
+                            && y < Window.getYNormal(75 + (ypos * 47)) + 24
+                            && y > Window.getYNormal(75 + (ypos * 47)) - 24){
+                        System.out.println(xpos + ", " + ypos);
+                        board[1] = xpos;
+                        board[2] = ypos;
+                        return(board);
+                    }
+                }
+            }
+        }
+        else if (x < Window.getX(Window.getWidth2()/4*3) - 2 
+                && x > Window.getX(Window.getWidth2()/4*3) - 198 
+                && y < Window.getYNormal((Window.getHeight2()/4) + 23) + 98 
+                && y > Window.getYNormal((Window.getHeight2()/4) + 23) - 98){
+            System.out.println("Board 4");
+            board[0] = 3;
+            for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
+                for (int ypos = 0; ypos < Board.numRows(); ypos ++){
+                    if (x <  Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29) + 24 
+                            && x >  Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29) - 24 
+                            && y < Window.getYNormal(75 + (ypos * 47)) + 24 
+                            && y > Window.getYNormal(75 + (ypos * 47)) - 24){
+                        System.out.println(xpos + ", " + ypos);
+                        board[1] = xpos;
+                        board[2] = ypos;
+                        return(board);
+                    }
+                }
+            }
+        }
+        return(null);
     }
 }

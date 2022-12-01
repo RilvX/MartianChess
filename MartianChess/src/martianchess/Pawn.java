@@ -8,4 +8,7 @@ public class Pawn extends Pieces {
         pieceImage = Toolkit.getDefaultToolkit().getImage("./SPiece_1Point.PNG");
         val = 1;
     }
+    public void move(Board board, int x, int y){
+        
+    }
 }
