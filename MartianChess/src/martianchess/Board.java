@@ -11,6 +11,11 @@ public class Board {
     public static Image boardImage = Toolkit.getDefaultToolkit().getImage("./Board.PNG");
     
     public void reset(){
+        for (int x = 0; x < NUM_COLUMNS; x++){
+            for (int y = 0; y < NUM_ROWS; y ++){
+                board[y][x] = null;
+            }
+        }
         board[0][0] = new Queen(this, 0, 0);
         board[1][0] = new Queen(this, 1, 0);
         board[0][1] = new Queen(this, 0, 1);
@@ -23,6 +28,12 @@ public class Board {
     }
     public Pieces get(int x, int y){
         return(board[x][y]);
+    }
+    public void set(Pieces piece, int x, int y){
+        board[x][y] = piece;
+        piece.xpos = x;
+        piece.ypos = y;
+        piece.board = this;
     }
     public void Draw(Graphics2D g,MartianChess thisObj)
     {
