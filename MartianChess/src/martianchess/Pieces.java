@@ -6,7 +6,7 @@ public abstract class Pieces {
     public static ArrayList<Pieces> pieces = new ArrayList<Pieces>();
     Image pieceImage;
     protected int val;
-    private Board board;
+    protected Board board;
     int xpos;
     int ypos;
 
