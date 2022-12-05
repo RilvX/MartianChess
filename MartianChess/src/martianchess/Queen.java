@@ -47,7 +47,7 @@ public class Queen extends Pieces {
             }
             else if (_board == Player.getPlayer3().getBoard()){
                 int sx = (xpos);
-                for (int sy = (4- ypos); sy < Board.numColumns(); sy ++){
+                for (int sy = (3 - ypos); sy < Board.numColumns(); sy ++){
                     System.out.println("Check: " + sx + ", " + sy);
                     if (sx == x && sy == y){
                         _board.set(this, x, y);
@@ -60,8 +60,28 @@ public class Queen extends Pieces {
             if (_board == Player.getPlayer1().getBoard() && y == ypos){
                 _board.set(this, x, y);
             }
+            else if (_board == Player.getPlayer1().getBoard()){
+                int sx = (3 - ypos);
+                for (int sy = (4 - xpos); sy < Board.numColumns(); sy ++){
+                    System.out.println("Check: " + sx + ", " + sy);
+                    if (sx == x && sy == y){
+                        _board.set(this, x, y);
+                    }
+                    sx --;
+                }
+            }
             else if (_board == Player.getPlayer4().getBoard() && x == xpos){
                 _board.set(this, x, y);
+            }
+            else if (_board == Player.getPlayer4().getBoard()){
+                int sx = (xpos);
+                for (int sy = (3 - ypos); sy < Board.numColumns(); sy ++){
+                    System.out.println("Check: " + sx + ", " + sy);
+                    if (sx == x && sy == y){
+                        _board.set(this, x, y);
+                    }
+                    sx --;
+                }
             }
         }
         else if (board == Player.getPlayer3().getBoard()){
