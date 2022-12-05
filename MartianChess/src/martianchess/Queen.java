@@ -13,13 +13,47 @@ public class Queen extends Pieces {
             if (x == xpos || y == ypos){
                 _board.set(this, x, y);
             }
+            for (int s = 0; s < 4; s ++){
+                if ((s + xpos) == x && (s + ypos) == y){
+                    _board.set(this, x, y);
+                }
+                if ((s + xpos) == x && (ypos - s) == y){
+                    _board.set(this, x, y);
+                }
+                if ((xpos - s) == x && (s + ypos) == y){
+                    _board.set(this, x, y);
+                }
+                if ((xpos - s) == x && (ypos - s) == y){
+                    _board.set(this, x, y);
+                }
+            }
         }
         else if (board == Player.getPlayer1().getBoard()){
             if (_board == Player.getPlayer2().getBoard() && y == ypos){
                 _board.set(this, x, y);
             }
+            else if (_board == Player.getPlayer2().getBoard()){
+                int sx = (3 - ypos);
+                for (int sy = (4 - xpos); sy < Board.numColumns(); sy ++){
+                    System.out.println("Check: " + sx + ", " + sy);
+                    if (sx == x && sy == y){
+                        _board.set(this, x, y);
+                    }
+                    sx --;
+                }
+            }
             else if (_board == Player.getPlayer3().getBoard() && x == xpos){
                 _board.set(this, x, y);
+            }
+            else if (_board == Player.getPlayer3().getBoard()){
+                int sx = (xpos);
+                for (int sy = (4- ypos); sy < Board.numColumns(); sy ++){
+                    System.out.println("Check: " + sx + ", " + sy);
+                    if (sx == x && sy == y){
+                        _board.set(this, x, y);
+                    }
+                    sx --;
+                }
             }
         }
         else if (board == Player.getPlayer2().getBoard()){
