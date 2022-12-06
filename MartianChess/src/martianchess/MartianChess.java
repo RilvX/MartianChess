@@ -21,15 +21,6 @@ public class MartianChess extends JFrame implements Runnable {
     
     boolean gameOver;
     
-    boolean gameStart;
-    boolean showStart;
-    boolean showInst;
-    boolean showPlayers;
-    boolean hoverOne;
-    boolean hoverTwo;
-    int xpos;
-    int ypos;
-    
     static int timeCount;
     
     int score;
@@ -61,19 +52,7 @@ public class MartianChess extends JFrame implements Runnable {
                         Board board = null;
                         if (movePos[0] == 0){
                             board = Player.getPlayer1().getBoard();
-                            if (e.getX() >= 60 && e.getX() <= 310 && e.getY() >= 300 && e.getY() <= 370){
-                                showPlayers = true;
-                            }
-                            if (e.getX() >= 60 && e.getX() <= 310 && e.getY() >= 400 && e.getY() <= 470){
-                                showInst = true;
-                            }
-
-                            if (e.getX() >= 375 && e.getX() <= 450 && e.getY() >= 300 && e.getY() <= 375){
-                                gameStart = false;
-                            }
-                            
                         }
-                        
                         else if (movePos[0] == 1){
                             board = Player.getPlayer2().getBoard();
                         }
@@ -101,24 +80,7 @@ public class MartianChess extends JFrame implements Runnable {
 
     addMouseMotionListener(new MouseMotionAdapter() {
       public void mouseMoved(MouseEvent e) {
-        if (e.getX() >= 60 && e.getX() <= 310 && e.getY() >= 300 && e.getY() <= 370){
-            hoverOne = true;
-        }
-        else
-        {
-            hoverOne = false;
-        }
-
-        if (e.getX() >= 60 && e.getX() <= 310 && e.getY() >= 400 && e.getY() <= 470){
-            hoverTwo = true;
-        }
-        else{
-            hoverTwo = false;
-        }
-
-
-        xpos = e.getX();
-        ypos = e.getY();
+          
         repaint();
       }
     });
@@ -193,28 +155,28 @@ public class MartianChess extends JFrame implements Runnable {
 //        if (numPlayers >= 1)
 //        {
             g.setColor(Player.getPlayer1().getColor());
-            g.drawString("Score = " + score, Window.getWidth2()/4-100, 45);
+            g.drawString("Score = " + Player.getPlayer1().getScore(), Window.getWidth2()/4-100, 45);
             g.drawString("Wins = " + score, Window.getWidth2()/4-100, 60);
 //        }
 //        
 //        if (numPlayers >= 2)
 //        {
             g.setColor(Player.getPlayer2().getColor());
-            g.drawString("Score = " + score, (Window.getWidth2()/4)*3+20, 45);
+            g.drawString("Score = " + Player.getPlayer2().getScore(), (Window.getWidth2()/4)*3+20, 45);
             g.drawString("Wins = " + score, (Window.getWidth2()/4)*3+20, 60);
 //        }
         
         if (Player.getNumPlayers() >= 3)
         {
             g.setColor(Player.getPlayer3().getColor());
-            g.drawString("Score = " + score, Window.getWidth2()/4-100, Window.WINDOW_HEIGHT-25);
+            g.drawString("Score = " + Player.getPlayer3().getScore(), Window.getWidth2()/4-100, Window.WINDOW_HEIGHT-25);
             g.drawString("Wins = " + score, Window.getWidth2()/4-100,Window.WINDOW_HEIGHT-10); 
         }
 //        
        if (Player.getNumPlayers() >= 4)
         {
             g.setColor(Player.getPlayer4().getColor());
-            g.drawString("Score = " + score, (Window.getWidth2()/4)*3+20, Window.WINDOW_HEIGHT-25);
+            g.drawString("Score = " + Player.getPlayer4().getScore(), (Window.getWidth2()/4)*3+20, Window.WINDOW_HEIGHT-25);
             g.drawString("Wins = " + score, (Window.getWidth2()/4)*3+20, Window.WINDOW_HEIGHT-10);
         }
        Player.getPlayer1().getBoard().Draw(g, this);
@@ -225,62 +187,6 @@ public class MartianChess extends JFrame implements Runnable {
        }
 
        Player.draw(g, this);
-        
-                if (gameStart)
-        {
-            g.setColor(Color.red);
-            g.fillRect(0, 0, Window.xsize, Window.ysize);
-
-            g.setColor(Color.black);
-            g.setFont (new Font ("Arial",Font.PLAIN, 50));
-            
-            g.drawString("Welcome to Martian Chess!", (Window.getWidth2()/8), (Window.getHeight2()/2));
-
-            g.setFont (new Font ("Arial",Font.PLAIN, 20));
-            g.drawString("By: Thomas, Lucas, Caiden", (Window.getWidth2()/8), (Window.getHeight2()/3));
-
-            g.setFont (new Font ("Arial",Font.PLAIN, 30));
-
-            g.setColor(Color.black);
-            g.fillRect(Window.getWidth2()/10, 295, 250, 75);
-            g.fillRect(Window.getWidth2()/10, 395, 250, 75);
-
-            if (hoverOne)
-            {
-                g.setColor(Color.white);
-                g.fillRect(Window.getWidth2()/10, 295, 250, 75);
-            }
-
-            if (hoverTwo)
-            {
-                g.setColor(Color.white);
-                g.fillRect(Window.getWidth2()/10, 395, 250, 75);
-            }
-
-            g.setColor(Color.blue);
-            g.drawString("PLAY", (Window.getWidth2()/8), (Window.getHeight2() - 150));
-            g.drawString("Intructions", (Window.getWidth2()/8), (Window.getHeight2() - 50));
-
-            if (showPlayers)
-            {
-                g.setColor(Color.black);
-                g.fillRect(375, 295, 75, 75);
-                g.fillRect(475, 295, 75, 75);
-                g.fillRect(575, 295, 75, 75);
-                g.fillRect(675, 295, 75, 75);
-
-                g.setColor(Color.white);
-                g.drawString("1", (Window.getWidth2() - 400), (Window.getHeight2() - 150));
-                g.drawString("2", (Window.getWidth2() - 300), (Window.getHeight2() - 150));
-                g.drawString("3", (Window.getWidth2() - 200), (Window.getHeight2() - 150));
-                g.drawString("4", (Window.getWidth2() - 100), (Window.getHeight2() - 150));
-            }
-            if (showInst)
-            {
-            g.setFont (new Font ("Arial",Font.PLAIN, 20));
-            g.setColor(Color.black);
-            g.drawString("Use arrow keys and enter for selection.", (Window.getWidth2() - 400), (Window.getHeight2() - 150));
-            }
         
         
         if (gameOver)        
