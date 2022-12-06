@@ -25,7 +25,9 @@ public abstract class Pieces {
     public static void Init()
     {
     }
-    
+    public int getVal(){
+        return(val);
+    }
     public void Draw(Graphics2D g,MartianChess thisObj)
     {
         if (Player.getNumPlayers() == 4){
