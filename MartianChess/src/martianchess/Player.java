@@ -12,7 +12,9 @@ public class Player {
     
     Player(){
     }
-    
+    public int getScore(){
+        return(score);
+    }
     public static void Reset() {
         if (players[0] == null) {
             players[0] = new Player(Color.red);
@@ -74,9 +76,5 @@ public class Player {
     public void addScore(int _value)
     {
         score += _value;
-    }
-    public int getScore()
-    {
-        return score;
     }
 }
