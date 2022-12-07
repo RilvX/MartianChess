@@ -6,15 +6,9 @@ public abstract class Pieces {
     public static ArrayList<Pieces> pieces = new ArrayList<Pieces>();
     Image pieceImage;
     protected int val;
-    protected Board board;
-    int xpos;
-    int ypos;
 
-    Pieces(Board _board, int x, int y)
+    Pieces()
     {
-        board = _board;
-        xpos = x;
-        ypos = y;
     }
     
     public void animate()
@@ -28,22 +22,22 @@ public abstract class Pieces {
     public int getVal(){
         return(val);
     }
-    public void Draw(Graphics2D g,MartianChess thisObj)
+    public void Draw(Graphics2D g,MartianChess thisObj, int xpos, int ypos)
     {
         if (Player.getNumPlayers() == 4){
-            if (board == Player.getPlayer1().getBoard())
+            if (xpos < 4 && ypos < 4)
                 drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28),Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) ,0,.125,.125);
-            else if (board == Player.getPlayer2().getBoard())
-                drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29),Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) ,0,.125,.125);
-            else if (board == Player.getPlayer3().getBoard())
-                drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28),Window.getYNormal(75 + (ypos * 47)) ,0,.125,.125);
-            else if (board == Player.getPlayer4().getBoard())
-                drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29),Window.getYNormal(75 + (ypos * 47)),0,.125,.125);
+            else if (xpos > 3 && ypos < 4)
+                drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) + (xpos * 48) + 31),Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) ,0,.125,.125);
+            else if (xpos < 4 && ypos > 3)
+                drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28),Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 35) ,0,.125,.125);
+            else if (xpos > 3 && ypos > 3)
+                drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) + (xpos * 48) + 31),Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 35) ,0,.125,.125);
         }
         else if (Player.getNumPlayers() == 2){
-            if (board == Player.getPlayer1().getBoard())
+            if (xpos < 4 && ypos < 4)
                 drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/4) + (xpos * 48) + 126),Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 47) ,0,.125,.125);
-            if (board == Player.getPlayer2().getBoard())
+            if (xpos < 4 && ypos > 3)
                 drawImage(g,thisObj,this.pieceImage, Window.getX((Window.getWidth2()/2) - (xpos * 48) + 71),Window.getYNormal(77 + (ypos * 47)),0,.125,.125);
         }
     }
@@ -62,7 +56,7 @@ public abstract class Pieces {
         g.rotate(-rot  * Math.PI/180.0);
         g.translate(-xpos,-ypos);
     }    
-    public abstract void move(Board board, int x, int y);
+    public abstract boolean move(int x, int y, int sx, int sy);
 }
 
 //public class Pieces {

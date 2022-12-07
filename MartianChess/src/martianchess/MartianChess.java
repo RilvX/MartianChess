@@ -13,11 +13,16 @@ public class MartianChess extends JFrame implements Runnable {
     Graphics2D g;
     
     Image background;
+
+    public static Player winner;
     
+    public static boolean game = true;
     
     Pieces pieces;
     
     Pieces selectedPiece;
+    int SX;
+    int SY;
     
     boolean gameOver;
     
@@ -47,24 +52,11 @@ public class MartianChess extends JFrame implements Runnable {
                 }
                 if (e.BUTTON3 == e.getButton()) {
                     //right button
-                    if (selectedPiece != null){
+                    if (selectedPiece != null && game){
                         int[] movePos = MovePos(e.getX(), e.getY());
-                        Board board = null;
-                        if (movePos[0] == 0){
-                            board = Player.getPlayer1().getBoard();
-                        }
-                        else if (movePos[0] == 1){
-                            board = Player.getPlayer2().getBoard();
-                        }
-                        else if (movePos[0] == 2){
-                            board = Player.getPlayer3().getBoard();
-                        }
-                        else if (movePos[0] == 3){
-                            board = Player.getPlayer4().getBoard();
-                        }
-                        if (board != null){
-                            selectedPiece.move(board, movePos[1], movePos[2]);
+                        if (selectedPiece.move(movePos[0], movePos[1], SX, SY)){
                             selectedPiece = null;
+                            Player.switchCurrentPlayer();
                         }
                     }
                 }
@@ -149,51 +141,54 @@ public class MartianChess extends JFrame implements Runnable {
 
         g.drawImage(background,Window.getX(0),Window.getY(0),Window.getWidth2(),Window.getHeight2(),this);
         
-        
+        g.setFont (new Font ("Times New Roman",Font.PLAIN, 20));
         
         //Move to new class
 //        if (numPlayers >= 1)
 //        {
             g.setColor(Player.getPlayer1().getColor());
             g.drawString("Score = " + Player.getPlayer1().getScore(), Window.getWidth2()/4-100, 45);
-            g.drawString("Wins = " + score, Window.getWidth2()/4-100, 60);
+            g.drawString("Wins = " + Player.getPlayer1().getWin(), Window.getWidth2()/4-100, 60);
 //        }
 //        
 //        if (numPlayers >= 2)
 //        {
             g.setColor(Player.getPlayer2().getColor());
             g.drawString("Score = " + Player.getPlayer2().getScore(), (Window.getWidth2()/4)*3+20, 45);
-            g.drawString("Wins = " + score, (Window.getWidth2()/4)*3+20, 60);
+            g.drawString("Wins = " + Player.getPlayer2().getWin(), (Window.getWidth2()/4)*3+20, 60);
 //        }
         
-        if (Player.getNumPlayers() >= 3)
-        {
-            g.setColor(Player.getPlayer3().getColor());
-            g.drawString("Score = " + Player.getPlayer3().getScore(), Window.getWidth2()/4-100, Window.WINDOW_HEIGHT-25);
-            g.drawString("Wins = " + score, Window.getWidth2()/4-100,Window.WINDOW_HEIGHT-10); 
-        }
-//        
-       if (Player.getNumPlayers() >= 4)
+        if (Player.getNumPlayers() == 4)
         {
             g.setColor(Player.getPlayer4().getColor());
-            g.drawString("Score = " + Player.getPlayer4().getScore(), (Window.getWidth2()/4)*3+20, Window.WINDOW_HEIGHT-25);
-            g.drawString("Wins = " + score, (Window.getWidth2()/4)*3+20, Window.WINDOW_HEIGHT-10);
+            g.drawString("Score = " + Player.getPlayer4().getScore(), Window.getWidth2()/4-100, Window.WINDOW_HEIGHT-25);
+            g.drawString("Wins = " + Player.getPlayer4().getWin(), Window.getWidth2()/4-100,Window.WINDOW_HEIGHT-10); 
         }
-       Player.getPlayer1().getBoard().Draw(g, this);
-       Player.getPlayer2().getBoard().Draw(g, this);
-       if (Player.getNumPlayers() == 4){
-           Player.getPlayer3().getBoard().Draw(g, this);
-           Player.getPlayer4().getBoard().Draw(g, this);
-       }
+//        
+       if (Player.getNumPlayers() == 4)
+        {
+            g.setColor(Player.getPlayer3().getColor());
+            g.drawString("Score = " + Player.getPlayer3().getScore(), (Window.getWidth2()/4)*3+20, Window.WINDOW_HEIGHT-25);
+            g.drawString("Wins = " + Player.getPlayer3().getWin(), (Window.getWidth2()/4)*3+20, Window.WINDOW_HEIGHT-10);
+        }
+       Board.draw(g, this);
 
        Player.draw(g, this);
         
         
-        if (gameOver)        
+        if (!game)        
         {
-            g.setColor(Color.red);
+            winner = Player.getCurrentPlayer();
+            g.setColor(Color.WHITE);
             g.setFont (new Font ("Arial",Font.PLAIN, 50));
-            g.drawString("Player" + "1" + "Wins", 60, 400);
+            if (winner == Player.getPlayer1())
+                g.drawString("Player 1 Wins", Window.getWidth2()/4 + 40, Window.getHeight2()/2 + 60);
+            else if (winner == Player.getPlayer2())
+                g.drawString("Player 2 Wins", Window.getWidth2()/4 + 40, Window.getHeight2()/2 + 40);
+            else if (winner == Player.getPlayer3())
+                g.drawString("Player 4 Wins", Window.getWidth2()/4 + 40, Window.getHeight2()/2 + 40);
+            else if (winner == Player.getPlayer4())
+                g.drawString("Player 3 Wins", Window.getWidth2()/4 + 40, Window.getHeight2()/2 + 40);
         }
         
         gOld.drawImage(image, 0, 0, null);
@@ -219,6 +214,7 @@ public class MartianChess extends JFrame implements Runnable {
         timeCount = 0;
         gameOver = false;
         score = 0;
+        game = true;
         Player.Reset();
     }
 /////////////////////////////////////////////////////////////////////////
@@ -255,13 +251,25 @@ public class MartianChess extends JFrame implements Runnable {
         }
         relaxer = null;
     }
+    public static void gameOver(){
+        game = false;
+        winner = Player.getPlayer1();
+        if (Player.getPlayer2().getScore() > winner.getScore())
+            winner = Player.getPlayer2();
+        if (Player.getPlayer3().getScore() > winner.getScore())
+            winner = Player.getPlayer3();
+        if (Player.getPlayer4().getScore() > winner.getScore())
+            winner = Player.getPlayer4();
+        winner.addWin();
+    }
     public Pieces select(int x, int y){
         Board board;
         if (Player.getNumPlayers() == 4){
             if (x < Window.getX(Window.getWidth2()/4) + 198 
                     && x > Window.getX(Window.getWidth2()/4) + 2 
                     && y < Window.getYNormal(Window.getHeight2()/4*3 - 23) + 98 
-                    && y > Window.getYNormal(Window.getHeight2()/4*3 - 23) - 98){
+                    && y > Window.getYNormal(Window.getHeight2()/4*3 - 23) - 98
+                    && Player.getCurrentPlayer() == Player.getPlayer1()){
                 System.out.println("Board 1");
                 for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
                     for (int ypos = 0; ypos < Board.numRows(); ypos ++){
@@ -270,7 +278,9 @@ public class MartianChess extends JFrame implements Runnable {
                                 && y < Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) + 24 
                                 && y > Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) - 24){
                             System.out.println(xpos + ", " + ypos);
-                            return(Player.getPlayer1().getBoard().get(xpos, ypos));
+                            SX = xpos;
+                            SY = ypos;
+                            return(Board.get(xpos, ypos));
                         }
                     }
                 }
@@ -278,7 +288,8 @@ public class MartianChess extends JFrame implements Runnable {
             else if (x < Window.getX(Window.getWidth2()/4*3) - 2 
                     && x > Window.getX(Window.getWidth2()/4*3) - 198 
                     && y < Window.getYNormal(Window.getHeight2()/4*3 - 23) + 98 
-                    && y > Window.getYNormal(Window.getHeight2()/4*3 - 23) - 98){
+                    && y > Window.getYNormal(Window.getHeight2()/4*3 - 23) - 98
+                    && Player.getCurrentPlayer() == Player.getPlayer2()){
                 System.out.println("Board 2");
                 for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
                     for (int ypos = 0; ypos < Board.numRows(); ypos ++){
@@ -287,7 +298,9 @@ public class MartianChess extends JFrame implements Runnable {
                                 && y < Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) + 24
                                 && y > Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) - 24){
                             System.out.println(xpos + ", " + ypos);
-                            return(Player.getPlayer2().getBoard().get(xpos, ypos));
+                            SX = 7 - xpos;
+                            SY = ypos;
+                            return(Board.get(7 - xpos, ypos));
                         }
                     }
                 }
@@ -295,8 +308,9 @@ public class MartianChess extends JFrame implements Runnable {
             else if (x < Window.getX(Window.getWidth2()/4) + 198 
                     && x > Window.getX(Window.getWidth2()/4) + 2 
                     && y < Window.getYNormal((Window.getHeight2()/4) + 23) + 98 
-                    && y > Window.getYNormal((Window.getHeight2()/4) + 23) - 98){
-                System.out.println("Board 3");
+                    && y > Window.getYNormal((Window.getHeight2()/4) + 23) - 98
+                    && Player.getCurrentPlayer() == Player.getPlayer4()){
+                System.out.println("Board 4");
                 for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
                     for (int ypos = 0; ypos < Board.numRows(); ypos ++){
                         if (x < Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28) + 24
@@ -304,7 +318,9 @@ public class MartianChess extends JFrame implements Runnable {
                                 && y < Window.getYNormal(75 + (ypos * 47)) + 24
                                 && y > Window.getYNormal(75 + (ypos * 47)) - 24){
                             System.out.println(xpos + ", " + ypos);
-                            return(Player.getPlayer3().getBoard().get(xpos, ypos));
+                            SX = xpos;
+                            SY = 7 - ypos;
+                            return(Board.get(xpos, 7 - ypos));
                         }
                     }
                 }
@@ -312,8 +328,9 @@ public class MartianChess extends JFrame implements Runnable {
             else if (x < Window.getX(Window.getWidth2()/4*3) - 2 
                     && x > Window.getX(Window.getWidth2()/4*3) - 198 
                     && y < Window.getYNormal((Window.getHeight2()/4) + 23) + 98 
-                    && y > Window.getYNormal((Window.getHeight2()/4) + 23) - 98){
-                System.out.println("Board 4");
+                    && y > Window.getYNormal((Window.getHeight2()/4) + 23) - 98
+                    && Player.getCurrentPlayer() == Player.getPlayer3()){
+                System.out.println("Board 3");
                 for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
                     for (int ypos = 0; ypos < Board.numRows(); ypos ++){
                         if (x <  Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29) + 24 
@@ -321,7 +338,9 @@ public class MartianChess extends JFrame implements Runnable {
                                 && y < Window.getYNormal(75 + (ypos * 47)) + 24 
                                 && y > Window.getYNormal(75 + (ypos * 47)) - 24){
                             System.out.println(xpos + ", " + ypos);
-                            return(Player.getPlayer4().getBoard().get(xpos, ypos));
+                            SX = 7 - xpos;
+                            SY = 7 - ypos;
+                            return(Board.get(7 - xpos, 7 - ypos));
                         }
                     }
                 }
@@ -340,7 +359,7 @@ public class MartianChess extends JFrame implements Runnable {
                                 && y < Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 47) + 24 
                                 && y > Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 47) - 24){
                             System.out.println(xpos + ", " + ypos);
-                            return(Player.getPlayer1().getBoard().get(xpos, ypos));
+                            return(Board.get(xpos, ypos));
                         }
                     }
                 }
@@ -357,7 +376,7 @@ public class MartianChess extends JFrame implements Runnable {
                                 && y < Window.getYNormal(77 + (ypos * 47)) + 24 
                                 && y > Window.getYNormal(77 + (ypos * 47)) - 24){
                             System.out.println(xpos + ", " + ypos);
-                            return(Player.getPlayer1().getBoard().get(xpos, ypos));
+                            return(Board.get(xpos, ypos));
                         }
                     }
                 }
@@ -367,14 +386,13 @@ public class MartianChess extends JFrame implements Runnable {
     }
     
     public int[] MovePos(int x, int y){
-        int[] board = new int[3];
+        int[] board = new int[2];
         if (Player.getNumPlayers() == 4){
             if (x < Window.getX(Window.getWidth2()/4) + 198 
                     && x > Window.getX(Window.getWidth2()/4) + 2 
                     && y < Window.getYNormal(Window.getHeight2()/4*3 - 23) + 98 
                     && y > Window.getYNormal(Window.getHeight2()/4*3 - 23) - 98){
                 System.out.println("Board 1");
-                board[0] = 0;
                 for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
                     for (int ypos = 0; ypos < Board.numRows(); ypos ++){
                         if (x < Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28) + 24 
@@ -382,8 +400,8 @@ public class MartianChess extends JFrame implements Runnable {
                                 && y < Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) + 24 
                                 && y > Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) - 24){
                             System.out.println(xpos + ", " + ypos);
-                            board[1] = xpos;
-                            board[2] = ypos;
+                            board[0] = xpos;
+                            board[1] = ypos;
                             return(board);
                         }
                     }
@@ -394,7 +412,6 @@ public class MartianChess extends JFrame implements Runnable {
                     && y < Window.getYNormal(Window.getHeight2()/4*3 - 23) + 98 
                     && y > Window.getYNormal(Window.getHeight2()/4*3 - 23) - 98){
                 System.out.println("Board 2");
-                board[0] = 1;
                 for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
                     for (int ypos = 0; ypos < Board.numRows(); ypos ++){
                         if (x < Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29) + 24
@@ -402,8 +419,8 @@ public class MartianChess extends JFrame implements Runnable {
                                 && y < Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) + 24
                                 && y > Window.getYNormal(((Window.getHeight2()/4)*3) - (ypos * 47) + 48) - 24){
                             System.out.println(xpos + ", " + ypos);
-                            board[1] = xpos;
-                            board[2] = ypos;
+                            board[0] = 7 - xpos;
+                            board[1] = ypos;
                             return(board);
                         }
                     }
@@ -414,7 +431,6 @@ public class MartianChess extends JFrame implements Runnable {
                     && y < Window.getYNormal((Window.getHeight2()/4) + 23) + 98 
                     && y > Window.getYNormal((Window.getHeight2()/4) + 23) - 98){
                 System.out.println("Board 3");
-                board[0] = 2;
                 for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
                     for (int ypos = 0; ypos < Board.numRows(); ypos ++){
                         if (x < Window.getX((Window.getWidth2()/4) + (xpos * 48) + 28) + 24
@@ -422,8 +438,8 @@ public class MartianChess extends JFrame implements Runnable {
                                 && y < Window.getYNormal(75 + (ypos * 47)) + 24
                                 && y > Window.getYNormal(75 + (ypos * 47)) - 24){
                             System.out.println(xpos + ", " + ypos);
-                            board[1] = xpos;
-                            board[2] = ypos;
+                            board[0] = xpos;
+                            board[1] = 7 - ypos;
                             return(board);
                         }
                     }
@@ -434,7 +450,6 @@ public class MartianChess extends JFrame implements Runnable {
                     && y < Window.getYNormal((Window.getHeight2()/4) + 23) + 98 
                     && y > Window.getYNormal((Window.getHeight2()/4) + 23) - 98){
                 System.out.println("Board 4");
-                board[0] = 3;
                 for (int xpos = 0; xpos < Board.numColumns(); xpos ++){
                     for (int ypos = 0; ypos < Board.numRows(); ypos ++){
                         if (x <  Window.getX((Window.getWidth2()/4) * 3 - (xpos * 48) - 29) + 24 
@@ -442,8 +457,8 @@ public class MartianChess extends JFrame implements Runnable {
                                 && y < Window.getYNormal(75 + (ypos * 47)) + 24 
                                 && y > Window.getYNormal(75 + (ypos * 47)) - 24){
                             System.out.println(xpos + ", " + ypos);
-                            board[1] = xpos;
-                            board[2] = ypos;
+                            board[0] = 7 - xpos;
+                            board[1] = 7 - ypos;
                             return(board);
                         }
                     }
@@ -493,5 +508,5 @@ public class MartianChess extends JFrame implements Runnable {
             }
         }
         return(null);
-    }
+    }    
 }

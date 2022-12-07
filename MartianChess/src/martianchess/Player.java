@@ -1,12 +1,15 @@
 package martianchess;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Player {
     private static int numPlayers = 4;
     private static Player players[] = new Player[numPlayers];
+    public ArrayList<Pieces> collectedPieces = new ArrayList<Pieces>();
     private static Player currentPlayer;
-    private Board board = new Board();
+    private int wins;
+    private static int TSLT;
     private Color color;
     private int score;
     
@@ -14,6 +17,9 @@ public class Player {
     }
     public int getScore(){
         return(score);
+    }
+    public static void resetTSLT(){
+        TSLT = -1;
     }
     public static void Reset() {
         if (players[0] == null) {
@@ -24,18 +30,15 @@ public class Player {
                 players[3] = new Player(Color.green);
             }
         }
-        for (Player obj: players){
-            obj.board.reset();
-        }
+        Board.reset();
         currentPlayer = players[0];
+        TSLT =0;
     }
     public static void draw(Graphics2D g,MartianChess thisObj){
-        for (Player obj: players){
-            for (int x = 0; x < Board.numColumns(); x ++){
-                for(int y = 0; y < Board.numRows(); y ++){
-                    if (obj.board.get(x,y) != null)
-                        obj.board.get(x, y).Draw(g, thisObj);
-                }
+        for (int x = 0; x < Board.numColumns(); x ++){
+            for(int y = 0; y < Board.numRows(); y ++){
+                if (Board.get(x,y) != null)
+                    Board.get(x, y).Draw(g, thisObj, x, y);
             }
         }
     }
@@ -45,11 +48,24 @@ public class Player {
     public static void switchCurrentPlayer() {
         if (currentPlayer == players[0])
             currentPlayer = players[1];
-        else
+        else if (currentPlayer == players[1])
+        currentPlayer = players[2];
+        else if (currentPlayer == players[2])
+            currentPlayer = players[3];
+        else if (currentPlayer == players[3])
             currentPlayer = players[0];
+        TSLT ++;
+        if (TSLT >= 7)
+            MartianChess.gameOver();
     }    
     public static Player getPlayer1() {
         return players[0];
+    }
+    public void addWin(){
+        wins ++;
+    }
+    public int getWin(){
+        return(wins);
     }
     public static Player getPlayer2() {
         return players[1];
@@ -59,9 +75,6 @@ public class Player {
     }
     public static Player getPlayer4() {
         return players[3];
-    }    
-    public Board getBoard(){
-        return(board);
     }
     public static int getNumPlayers(){
         return(numPlayers);
