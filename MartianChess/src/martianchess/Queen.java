@@ -3,131 +3,151 @@ package martianchess;
 import java.awt.Toolkit;
 
 public class Queen extends Pieces {
-    Queen(Board _board, int x, int y){
-        super(_board, x, y);
+    Queen(){
         pieceImage = Toolkit.getDefaultToolkit().getImage("./LPiece_3Point.PNG");
         val = 3;
     }
-    public void move(Board _board, int x, int y){
-        if (_board == board){
-            if (_board.get(x, y) != null){
-                
+    public boolean move(int x, int y, int sx, int sy){
+        for (int xpos = (sx + 1); xpos < Board.numColumns(); xpos ++){
+            if (xpos == x && y == sy){
+                if (((x < 4 && sx < 4)
+                || (x > 3 && sx > 3))
+                && Board.get(xpos, sy) != null){
+
+                }
+                else{
+                    if (Board.get(x, y) != null)
+                        Player.getCurrentPlayer().addScore(Board.get(x, y).val);
+                        Player.getCurrentPlayer().collectedPieces.add(Board.get(x, y));
+                        Player.resetTSLT();
+                    Board.set(this, x, y);
+                    Board.set(null, sx, sy);
+                    return(true);
+                }
             }
-            else{
-                if (x == xpos || y == ypos){
-                    _board.set(this, x, y);
-                }
-                for (int s = 0; s < 4; s ++){
-                    if ((s + xpos) == x && (s + ypos) == y){
-                        _board.set(this, x, y);
-                    }
-                    if ((s + xpos) == x && (ypos - s) == y){
-                        _board.set(this, x, y);
-                    }
-                    if ((xpos - s) == x && (s + ypos) == y){
-                        _board.set(this, x, y);
-                    }
-                    if ((xpos - s) == x && (ypos - s) == y){
-                        _board.set(this, x, y);
-                    }
-                }
+            else if (Board.get(xpos, sy) != null){
+                xpos = Board.numColumns();
             }
         }
-        else if (board == Player.getPlayer1().getBoard()){
-            if (_board == Player.getPlayer2().getBoard() && y == ypos){
-                if (_board.get(x, y) != null){
-                    Player.getPlayer1().addScore(_board.get(x, y).getVal());
+        for (int xpos = (sx - 1); xpos >= 0; xpos --){
+            if (xpos == x && y == sy){
+                if (((x < 4 && sx < 4)
+                || (x > 3 && sx > 3))
+                && Board.get(xpos, sy) != null){
+                    
                 }
-                _board.set(this, x, y);
+                else{
+                    if (Board.get(x, y) != null)
+                        Player.getCurrentPlayer().addScore(Board.get(x, y).val);
+                        Player.getCurrentPlayer().collectedPieces.add(Board.get(x, y));
+                        Player.resetTSLT();
+                    Board.set(this, x, y);
+                    Board.set(null, sx, sy);
+                    return(true);
+                }
             }
-            else if (_board == Player.getPlayer2().getBoard()){
-                int sx = (3 - ypos);
-                for (int sy = (4 - xpos); sy < Board.numColumns(); sy ++){
-                    System.out.println("Check: " + sx + ", " + sy);
-                    if (sx == x && sy == y){
-                        _board.set(this, x, y);
-                    }
-                    sx --;
-                }
-            }
-            else if (_board == Player.getPlayer3().getBoard() && x == xpos){
-                if (_board.get(x, y) != null){
-                    Player.getPlayer1().addScore(_board.get(x, y).getVal());
-                }
-                _board.set(this, x, y);
-            }
-            else if (_board == Player.getPlayer3().getBoard()){
-                int sx = (xpos);
-                for (int sy = (3 - ypos); sy < Board.numColumns(); sy ++){
-                    System.out.println("Check: " + sx + ", " + sy);
-                    if (sx == x && sy == y){
-                        _board.set(this, x, y);
-                    }
-                    sx --;
-                }
+            else if (Board.get(xpos, sy) != null){
+                xpos = -1;
             }
         }
-        else if (board == Player.getPlayer2().getBoard()){
-            if (_board == Player.getPlayer1().getBoard() && y == ypos){
-                if (_board.get(x, y) != null){
-                    Player.getPlayer2().addScore(_board.get(x, y).getVal());
+        for (int ypos = (sy + 1); ypos < Board.numColumns(); ypos ++){
+            if (ypos == y && x == sx){
+                if (((y < 4 && sy < 4)
+                || (y > 3 && sy > 3))
+                && Board.get(sx, ypos) != null){
+                    
                 }
-                _board.set(this, x, y);
+                else{
+                    if (Board.get(x, y) != null)
+                        Player.getCurrentPlayer().addScore(Board.get(x, y).val);
+                        Player.getCurrentPlayer().collectedPieces.add(Board.get(x, y));
+                        Player.resetTSLT();
+                    Board.set(this, x, y);
+                    Board.set(null, sx, sy);
+                    return(true);
+                }
             }
-            else if (_board == Player.getPlayer1().getBoard()){
-                int sx = (3 - ypos);
-                for (int sy = (4 - xpos); sy < Board.numColumns(); sy ++){
-                    System.out.println("Check: " + sx + ", " + sy);
-                    if (sx == x && sy == y){
-                        _board.set(this, x, y);
-                    }
-                    sx --;
-                }
-            }
-            else if (_board == Player.getPlayer4().getBoard() && x == xpos){
-                if (_board.get(x, y) != null){
-                    Player.getPlayer2().addScore(_board.get(x, y).getVal());
-                }
-                _board.set(this, x, y);
-            }
-            else if (_board == Player.getPlayer4().getBoard()){
-                int sx = (xpos);
-                for (int sy = (3 - ypos); sy < Board.numColumns(); sy ++){
-                    System.out.println("Check: " + sx + ", " + sy);
-                    if (sx == x && sy == y){
-                        _board.set(this, x, y);
-                    }
-                    sx --;
-                }
+            else if (Board.get(sx, ypos) != null){
+                ypos = Board.numRows();
             }
         }
-        else if (board == Player.getPlayer3().getBoard()){
-            if (_board == Player.getPlayer4().getBoard() && y == ypos){
-                if (_board.get(x, y) != null){
-                    Player.getPlayer3().addScore(_board.get(x, y).getVal());
+        for (int ypos = (sy - 1); ypos >= 0; ypos --){
+            if (ypos == y && x == sx){
+                if (((y < 4 && sy < 4)
+                || (y > 3 && sy > 3))
+                && Board.get(sx, ypos) != null){
+                    
                 }
-                _board.set(this, x, y);
+                else{
+                    if (Board.get(x, y) != null)
+                        Player.getCurrentPlayer().addScore(Board.get(x, y).val);
+                        Player.getCurrentPlayer().collectedPieces.add(Board.get(x, y));
+                        Player.resetTSLT();
+                    Board.set(this, x, y);
+                    Board.set(null, sx, sy);
+                    return(true);
+                }
             }
-            else if (_board == Player.getPlayer1().getBoard() && x == xpos){
-                if (_board.get(x, y) != null){
-                    Player.getPlayer3().addScore(_board.get(x, y).getVal());
-                }
-                _board.set(this, x, y);
-            }
-        }
-        else if (board == Player.getPlayer4().getBoard()){
-            if (_board == Player.getPlayer3().getBoard() && y == ypos){
-                if (_board.get(x, y) != null){
-                    Player.getPlayer4().addScore(_board.get(x, y).getVal());
-                }
-                _board.set(this, x, y);
-            }
-            else if (_board == Player.getPlayer2().getBoard() && x == xpos){
-                if (_board.get(x, y) != null){
-                    Player.getPlayer4().addScore(_board.get(x, y).getVal());
-                }
-                _board.set(this, x, y);
+            else if (Board.get(sx, ypos) != null){
+                ypos = -1;
             }
         }
+        for (int i = 1; (sx + i) < Board.numColumns() && (sy + i) < Board.numRows(); i ++){
+            if ((i + sx) == x && (i + sy) == y){
+                if (Board.get(x, y) != null)
+                    Player.getCurrentPlayer().addScore(Board.get(x, y).val);
+                    Player.getCurrentPlayer().collectedPieces.add(Board.get(x, y));
+                    Player.resetTSLT();
+                Board.set(this, x, y);
+                Board.set(null, sx, sy);
+                return(true);
+            }
+            else if (Board.get((sx + i), (sy + i)) != null){
+                i = Board.numColumns();
+            }
+        }
+        for (int i = 1; (sx - i) >= 0 && (sy + i) < Board.numRows(); i ++){    
+            if ((sx - i) == x && (i + sy) == y){
+                if (Board.get(x, y) != null)
+                    Player.getCurrentPlayer().addScore(Board.get(x, y).val);
+                    Player.getCurrentPlayer().collectedPieces.add(Board.get(x, y));
+                    Player.resetTSLT();
+                Board.set(this, x, y);
+                Board.set(null, sx, sy);
+                return(true);
+            }
+            else if (Board.get((sx - i), (sy + i)) != null){
+                i = Board.numColumns();
+            }
+        }
+        for (int i = 1; (sx + i) < Board.numColumns() && (sy - i) >= 0; i ++){ 
+            if ((i + sx) == x && (sy - i) == y){
+                if (Board.get(x, y) != null)
+                    Player.getCurrentPlayer().addScore(Board.get(x, y).val);
+                    Player.getCurrentPlayer().collectedPieces.add(Board.get(x, y));
+                    Player.resetTSLT();
+                Board.set(this, x, y);
+                Board.set(null, sx, sy);
+                return(true);
+            }
+            else if (Board.get((sx + i), (sy - i)) != null){
+                i = Board.numColumns();
+            }
+        }
+        for (int i = 1; (sx - i) >= 0 && (sy - i) >= 0; i ++){ 
+            if ((sx - i) == x && (sy - i) == y){
+                if (Board.get(x, y) != null)
+                    Player.getCurrentPlayer().addScore(Board.get(x, y).val);
+                    Player.getCurrentPlayer().collectedPieces.add(Board.get(x, y));
+                    Player.resetTSLT();
+                Board.set(this, x, y);
+                Board.set(null, sx, sy);
+                return(true);
+            }
+            else if (Board.get((sx - i), (sy - i)) != null){
+                i = Board.numColumns();
+            }
+        }
+        return(false);
     }
 }
